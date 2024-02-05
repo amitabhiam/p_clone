@@ -1,3 +1,5 @@
+import LoginButtton from "./LoginButtton"
+
 const Login = () => {
   return (
     <div className="flex h-[100vh] w-[100%]">
@@ -50,6 +52,10 @@ Password
             <div><input type="checkbox" className="mr-[10px]" /></div>
               <div className="text-[15px] font-semibold">I agree to terms & condition</div>
             </div>
+            </div>
+
+            <div>
+                <LoginButtton />
             </div>
 
            
