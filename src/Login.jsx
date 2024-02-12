@@ -1,5 +1,7 @@
 import LoginButtton from "./LoginButtton"
 
+
+
 const Login = () => {
   return (
     <div className="flex h-[100vh] w-[100%]">
@@ -57,7 +59,10 @@ Password
             <div>
                 <LoginButtton />
             </div>
-
+            
+            <div className="text-[#070562] ">
+                ForgotPassword ?
+            </div>
            
 
     
