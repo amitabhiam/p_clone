@@ -1,8 +1,15 @@
+
+
 import LoginButtton from "./LoginButtton"
 
 
 
+
 const Login = () => {
+
+    const handleClick = ()=> {
+        window.location.href = "/forgot-password";
+    }
   return (
     <div className="flex h-[100vh] w-[100%]">
         <div className="w-[60%] h-[auto] ml-0">
@@ -60,8 +67,9 @@ Password
                 <LoginButtton />
             </div>
             
-            <div className="text-[#070562] ">
+            <div className="text-[#070562] " onClick={handleClick} >
                 ForgotPassword ?
+                
             </div>
            
 
