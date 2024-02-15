@@ -1,5 +1,6 @@
 
 
+import { Link } from "react-router-dom";
 import LoginButtton from "./LoginButtton"
 
 
@@ -7,9 +8,9 @@ import LoginButtton from "./LoginButtton"
 
 const Login = () => {
 
-    const handleClick = ()=> {
-        window.location.href = "/forgot-password";
-    }
+    // const handleClick = ()=> {
+    //     window.location.href = "/forgot-password";
+    // }
   return (
     <div className="flex h-[100vh] w-[100%]">
         <div className="w-[60%] h-[auto] ml-0">
@@ -67,9 +68,11 @@ Password
                 <LoginButtton />
             </div>
             
-            <div className="text-[#070562] " onClick={handleClick} >
-                ForgotPassword ?
-                
+            <div className="text-[#070562] ">
+            <Link to='/forgot-password'>
+            
+                ForgotPassword ? 
+            </Link>
             </div>
            
 
