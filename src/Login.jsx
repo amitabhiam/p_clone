@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import LoginButtton from "./LoginButtton"
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { loginAsync} from "./Store/Slice/authSlice";
+import { getLoginDetails} from "./Store/Slice/authSlice";
 
 
 
@@ -24,7 +24,7 @@ const Login = () => {
         //     dispatch(loginFailure({error: 'invalid credential'}));
         // }
 
-        dispatch(loginAsync(userId, password));
+        dispatch(getLoginDetails(userId, password));
     };
 
    

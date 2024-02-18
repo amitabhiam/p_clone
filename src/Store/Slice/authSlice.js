@@ -8,7 +8,7 @@ const initialState = {
     error : null,
 }
 
-const apiUrl = 'sampleapi.json';
+const apiUrl = 'https://dummyjson.com/auth/login';
 
 const authSlice = createSlice({
     name: 'auth',
@@ -34,15 +34,26 @@ const authSlice = createSlice({
     },
 });
 
-export const loginAsync = (userId, password) => async (dispatch) => {
+export const getLoginDetails = (userId, password) => async (dispatch) => {
     try {
 
         const res = await axios.post(apiUrl, {
-            userId,
-            password,
+            headers: { 'Content-Type': 'application/json' },
+            username: userId,
+            password: password,
         });
 
         dispatch(loginSuccess({userId: res.data.userId}));
+
+        console.log(userId);
+
+        const { token } = res.data;
+
+        localStorage.setItem('token', token);
+
+        console.log(token);
+
+        console.log('Login Successful');
     }
 
     catch (error) {
