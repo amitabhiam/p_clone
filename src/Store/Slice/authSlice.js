@@ -1,0 +1,58 @@
+import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+
+
+const initialState = {
+    isAuthenticated : false,
+    userId : 'amitabh',
+    error : null,
+}
+
+const apiUrl = 'sampleapi.json';
+
+const authSlice = createSlice({
+    name: 'auth',
+    initialState,
+    reducers: {
+        loginSuccess: (state, action) => {
+            state.isAuthenticated = true;
+            state.userId = action.payload.userId;
+            state.error = null;
+        },
+
+        loginFailure: (state, action) => {
+            state.isAuthenticated = false;
+            state.userId = null;
+            state.error = action.payload.error;
+        },
+
+        logout: (state) => {
+            state.isAuthenticated = false;
+            state.userId = null;
+            state.error = null;
+        },
+    },
+});
+
+export const loginAsync = (userId, password) => async (dispatch) => {
+    try {
+
+        const res = await axios.post(apiUrl, {
+            userId,
+            password,
+        });
+
+        dispatch(loginSuccess({userId: res.data.userId}));
+    }
+
+    catch (error) {
+        if (error.res) {
+            dispatch(loginFailure({error: error.res.data.message}));
+        } else if (error.request) {
+            dispatch(loginFailure({error: 'No response from the server'}));
+        }
+    }
+};
+
+export const { loginSuccess, loginFailure, logout } = authSlice.actions;
+export default authSlice.reducer;
