@@ -86,7 +86,7 @@ const Login = () => {
             </div>
 
             <div>
-                <LoginButtton onClick = {handleLogin} />
+                <LoginButtton handleLogin = {handleLogin} />
             </div>
             
             <div className="text-[#070562] ">
