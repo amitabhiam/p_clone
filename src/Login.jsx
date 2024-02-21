@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import LoginButtton from "./LoginButtton";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getLoginDetails } from "./Store/Slice/authSlice";
 import Header from "./components/Header";
 
 const Login = () => {
+  const [numbers, setNumbers] = useState([]);
+
   const selector = useSelector((state) => state.auth.userId);
   console.log(selector);
 
@@ -22,6 +24,41 @@ const Login = () => {
     // }
 
     dispatch(getLoginDetails(userId, password));
+  };
+  useEffect(() => {
+    generateNumbers();
+  }, []);
+  const generateRandomNumber = () => {
+    return Math.floor(Math.random() * 900) + 100; // Generates a random 3-digit number
+  };
+
+  const generateNumbers = () => {
+    const newNumbers = Array.from({ length: 3 }, () => generateRandomNumber());
+    setNumbers(newNumbers);
+  };
+
+  const handleNumberClick = (clickedNumber) => {
+    const maxNumber = Math.max(...numbers);
+    if (clickedNumber === maxNumber) {
+      alert("Captcha passed!"); // You can replace this with your logic for a successful captcha
+      generateNumbers(); // Generate new numbers for the next captcha
+    } else {
+      alert("Incorrect! Try again."); // You can replace this with your logic for a failed captcha
+    }
+  };
+  const renderRandomNumber = () => {
+    return (
+      <div className="flex gap-4">
+        {numbers.map((number, index) => (
+          <div
+            className="border-[1px] border-red-500"
+            onClick={() => handleNumberClick(number)}
+          >
+            {number}
+          </div>
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -64,13 +101,9 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div className="flex mt-[52px] items-center justify-center w-[324px] gap-3">
-              <div className=" flex bg-[#F3EEF5] border-2   h-[44px] rounded-md items-center ">
-                <div className="font-normal text-[20px] tracking-[8px] px-[38px] ">
-                  673490
-                </div>
-              </div>
+            <div className=" mt-[52px] items-center justify-center w-[324px] gap-3">
               <div>Captcha</div>
+              {renderRandomNumber()}
             </div>
             <div className="">
               <input
