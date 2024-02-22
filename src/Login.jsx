@@ -27,7 +27,6 @@ const Login = () => {
         dispatch(getLoginDetails(userId, password));
     };
 
-   
     return (
     <div className="flex h-[100vh] w-[100%]">
         <div className="w-[60%] h-[auto] ml-0">
