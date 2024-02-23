@@ -23,7 +23,6 @@ const Login = () => {
         // else {
         //     dispatch(loginFailure({error: 'invalid credential'}));
         // }
-
         dispatch(getLoginDetails(userId, password));
     };
 
