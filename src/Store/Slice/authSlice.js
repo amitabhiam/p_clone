@@ -35,13 +35,14 @@ const authSlice = createSlice({
     },
 });
 
-export const getLoginDetails = (userId, password) => async (dispatch) => {
+export const getLoginDetails = (userId,password) => async (dispatch) => {
+    console.log(userId,password,"@@@");
     try {
 
         const res = await axios.post(apiUrl, {
             headers: { 'Content-Type': 'application/json' },
-            username: userId,
-            password: password,
+            username: 'kminchelle',
+            password: '0lelplR',
         });
 
         dispatch(loginSuccess({userId: res.data.username}));

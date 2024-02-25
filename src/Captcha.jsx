@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toastFailure } from "./Utills/Toast";
 
 
 
@@ -11,7 +12,7 @@ const Captcha = ({ onCaptchaValidation }) => {
       }, []);
 
       const generateRandomNumber = () => {
-        return Math.floor(Math.random() * 900) + 100; // Generates a random 3-digit number
+        return Math.floor(Math.random() * 900) + 100; 
       };
     
       const generateNumbers = () => {
@@ -20,15 +21,16 @@ const Captcha = ({ onCaptchaValidation }) => {
       };
     
       const handleNumberClick = (clickedNumber) => {
+        onCaptchaValidation(clickedNumber === Math.max(...numbers));
         const maxNumber = Math.max(...numbers);
         if (clickedNumber === maxNumber) {
+           
             onCaptchaValidation(true);
-            // alert("Captcha passed!");
-            generateNumbers(); // Generate new numbers for the next captcha
+
+            //generateNumbers(); 
         } 
         else {
             onCaptchaValidation(false);
-            // alert("Incorrect! Try again."); // You can replace this with your logic for a failed captcha
         }
       };
 
@@ -39,7 +41,7 @@ const Captcha = ({ onCaptchaValidation }) => {
             {numbers.map((number, index) => (
               <div
                 key={index}
-                className="border-[1px] border-red-500"
+                className={`border-[1px] border-red-500S`}
                 onClick={() => handleNumberClick(number)}
               >
                 {number}

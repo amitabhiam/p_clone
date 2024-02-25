@@ -5,55 +5,33 @@ import { useState } from "react";
 import { getLoginDetails } from "./Store/Slice/authSlice";
 import Header from "./components/Header";
 import Captcha from "./Captcha";
-import { Snackbar } from "@mui/material";
+import { toastFailure } from "./Utills/Toast";
 
 const Login = () => {
-  
 
-  const selector = useSelector((state) => state.auth.userId);
-  console.log(selector);
+    const selector = useSelector((state) => state.auth.userId);
+    console.log(selector);
 
     const dispatch = useDispatch();
     const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarMsg, setSnackbarMsg] = useState("");
+    
     const [isCaptchaValid, setCaptchaValid] = useState(true);
 
 
     const handleLogin = () => {
+    if(isCaptchaValid){
+        dispatch(getLoginDetails(userId, password));
 
-        if ( !userId || !password ) {
-            setSnackbarMsg("Invalid Login Credentials");
-            setSnackbarOpen(true);
-        } else if (!isCaptchaValid) {
-            setSnackbarMsg("Invalid Captcha");
-            setSnackbarOpen(true);
-        } else {
-            if (!userId || !password || !isCaptchaValid) {
-                setSnackbarMsg("Invalid Login Credentials and Captcha");
-                setSnackbarOpen(true);
-            } else {
-                dispatch(getLoginDetails(userId, password));
-                setSnackbarMsg('Login Successfull');
-                setSnackbarOpen(true);
-            }
-        }
-        // if (userId === 'amitabh' && password === 'password') {
-        //     dispatch(loginSuccess({userId}));
-        // } 
-        // else {
-        //     dispatch(loginFailure({error: 'invalid credential'}));
-        // }
-
-        
+    }else{
+        toastFailure("Invalid Captcha");
+        console.log("Inavalid captcha I am")
+    }
+            
     };
 
     const handleCaptchaValidation = (isValidate) => {
-        if (!isValidate) {
-            setSnackbarMsg("Invalid Captcha");
-            setSnackbarOpen(true);
-        }
+       setCaptchaValid(isValidate);
     }
 
    
@@ -100,11 +78,7 @@ const Login = () => {
             <div className=" mt-[52px] items-center justify-center w-[324px] gap-3">
               <div>Captcha</div>
                 <Captcha onCaptchaValidation = {handleCaptchaValidation} />
-                <Snackbar
-                    open={snackbarOpen}
-                    message={snackbarMsg}
-                    onClose={() => setSnackbarOpen(false)}
-                />
+             
             </div>
             <div className="">
               <input
