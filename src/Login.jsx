@@ -1,21 +1,44 @@
 import { Link } from "react-router-dom";
 import LoginButtton from "./LoginButtton";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getLoginDetails } from "./Store/Slice/authSlice";
 import Header from "./components/Header";
+import Captcha from "./Captcha";
+import { Snackbar } from "@mui/material";
 
 const Login = () => {
-  const [numbers, setNumbers] = useState([]);
+  
 
   const selector = useSelector((state) => state.auth.userId);
   console.log(selector);
 
-  const dispatch = useDispatch();
-  const [userId, setUserId] = useState("");
-  const [password, setPassword] = useState("");
+    const dispatch = useDispatch();
+    const [userId, setUserId] = useState("");
+    const [password, setPassword] = useState("");
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMsg, setSnackbarMsg] = useState("");
+    const [isCaptchaValid, setCaptchaValid] = useState(true);
+
 
     const handleLogin = () => {
+
+        if ( !userId || !password ) {
+            setSnackbarMsg("Invalid Login Credentials");
+            setSnackbarOpen(true);
+        } else if (!isCaptchaValid) {
+            setSnackbarMsg("Invalid Captcha");
+            setSnackbarOpen(true);
+        } else {
+            if (!userId || !password || !isCaptchaValid) {
+                setSnackbarMsg("Invalid Login Credentials and Captcha");
+                setSnackbarOpen(true);
+            } else {
+                dispatch(getLoginDetails(userId, password));
+                setSnackbarMsg('Login Successfull');
+                setSnackbarOpen(true);
+            }
+        }
         // if (userId === 'amitabh' && password === 'password') {
         //     dispatch(loginSuccess({userId}));
         // } 
@@ -23,24 +46,17 @@ const Login = () => {
         //     dispatch(loginFailure({error: 'invalid credential'}));
         // }
 
-        dispatch(getLoginDetails(userId, password));
+        
     };
 
-   
-    return (
-      <div className="flex gap-4">
-        {numbers.map((number, index) => (
-          <div
-            className="border-[1px] border-red-500"
-            onClick={() => handleNumberClick(number)}
-          >
-            {number}
-          </div>
-        ))}
-      </div>
-    );
-  };
+    const handleCaptchaValidation = (isValidate) => {
+        if (!isValidate) {
+            setSnackbarMsg("Invalid Captcha");
+            setSnackbarOpen(true);
+        }
+    }
 
+   
   return (
     <div className="h-[100vh] w-[100%]">
       <Header />
@@ -83,7 +99,12 @@ const Login = () => {
             </div>
             <div className=" mt-[52px] items-center justify-center w-[324px] gap-3">
               <div>Captcha</div>
-              {renderRandomNumber()}
+                <Captcha onCaptchaValidation = {handleCaptchaValidation} />
+                <Snackbar
+                    open={snackbarOpen}
+                    message={snackbarMsg}
+                    onClose={() => setSnackbarOpen(false)}
+                />
             </div>
             <div className="">
               <input
